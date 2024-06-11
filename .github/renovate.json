@@ -1,0 +1,109 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "commitMessagePrefix": "deps:",
+  "baseBranches": [
+    "main",
+    "/^stable\\/8\\..*/"
+  ],
+  "dependencyDashboard": true,
+  "prConcurrentLimit": 30,
+  "updateNotScheduled": false,
+  "schedule": [
+    "after 10pm every weekday",
+    "before 6am every weekday"
+  ],
+  "helmv3": {
+    "registryAliases": {
+      "helm-camunda-io": "https://helm.camunda.io"
+    }
+  },
+  "packageRules": [
+    {
+      "matchBaseBranches": ["/^stable\\/8\\..*/"],
+      "matchUpdateTypes": [
+        "minor",
+        "major"
+      ],
+      "enabled": false
+    },
+    {
+      "matchPackagePrefixes": ["org.opensearch.client"],
+      "matchUpdateTypes": [
+        "minor",
+        "major"
+      ],
+      "enabled": false
+    },
+    {
+      "matchPackagePrefixes": ["org.elasticsearch"],
+      "matchUpdateTypes": [
+        "minor",
+        "major"
+      ],
+      "enabled": false
+    },
+    {
+      "matchPackagePrefixes": ["co.elastic"],
+      "matchUpdateTypes": [
+        "minor",
+        "major"
+      ],
+      "enabled": false
+    },
+    {
+      "matchManagers": [
+        "dockerfile"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch"
+      ],
+      "enabled": false
+    },
+    {
+      "matchPackagePrefixes": ["org.jacoco"],
+      "allowedVersions": "!/0.8.9/"
+    },
+    {
+      "matchManagers": [
+        "maven"
+      ],
+      "description" : "Exclude SNAPSHOT versions, renovate may suggest them for pre-release values.",
+      "matchPackagePatterns": [".*"],
+      "allowedVersions": "!/-SNAPSHOT$/"
+    },
+    {
+      "matchManagers": ["npm", "nvm"],
+      "additionalBranchPrefix": "fe-"
+    },
+    {
+      "matchPackagePrefixes": ["@types/"],
+      "groupName": "definitelyTyped"
+    },
+    {
+      "extends": "monorepo:react",
+      "groupName": "react monorepo"
+    },
+    {
+      "extends": "monorepo:react-router",
+      "groupName": "react-router monorepo"
+    },
+    {
+      "matchManagers": ["npm", "nvm"],
+      "matchPackagePatterns": ["*"],
+      "matchUpdateTypes": ["patch"],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch"
+    }
+  ],
+  "dockerfile": {
+    "ignorePaths": [
+      "zeebe/benchmarks/**",
+      "clients/go/vendor/**"
+    ]
+  }
+}
